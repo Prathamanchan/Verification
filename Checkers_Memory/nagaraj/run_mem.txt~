@@ -1,0 +1,5 @@
+memory.v
+memorytb.v
+-access +rwc
+-input probe.tcl
+

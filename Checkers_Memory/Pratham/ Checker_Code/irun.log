@@ -1,0 +1,70 @@
+irun(64): 13.10-s016: (c) Copyright 1995-2014 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s016: Started on Apr 11, 2019 at 17:15:28 IST
+irun
+	-f run_mem.txt
+		testcase.v
+		mem_top.v
+		checker.v
+		top.v
+		-access +rwc
+		-input probe.tcl
+		-top test_top
+Recompiling... reason: file './testcase.v' is newer than expected.
+	expected: Thu Apr 11 17:14:30 2019
+	actual:   Thu Apr 11 17:15:22 2019
+file: testcase.v
+	module worklib.memtb:v
+		errors: 0, warnings: 0
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		test_top
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.memtb:v <0x4ec7ef87>
+			streams:   5, words:  5214
+		worklib.test_top:v <0x6d8935be>
+			streams:   1, words:  1053
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 4       4
+		Registers:              54      54
+		Scalar wires:            5       -
+		Vectored wires:          3       -
+		Always blocks:          12      12
+		Initial blocks:          6       6
+		Parallel blocks:         1       1
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.test_top:v
+Loading snapshot worklib.test_top:v .................... Done
+ncsim> source /home/cad/INCISIV131/tools/inca/files/ncsimrc
+ncsim> database -open waves_mem_tb -default
+Created default SHM database waves_mem_tb
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> ##probe -create -database waves_muxtb -all -depth {muxtb.UUT}
+ncsim> run 100 ms
+INFO: Cen=x
+INFO: Cen=0
+INFO: Time =                 3500 Writing_Data = 170 Address =  938
+INFO: Time =                 4500 Writing_Data = 170 Address =  938
+INFO: Time=                6500 Address= 939 Dout=  x VDout=  x
+FAIL:Write Failed
+------------------------------------------------------------------------
+INFO: Time=                8500 Address= 973 Dout=  x VDout=  x
+FAIL:Write Failed
+------------------------------------------------------------------------
+INFO: Time =                 9500 Writing_Data = 187 Address =  939
+INFO: Time =                10500 Writing_Data = 187 Address =  939
+INFO: Time=               12500 Address= 938 Dout=  x VDout=  x
+FAIL:Write Failed
+------------------------------------------------------------------------
+INFO: Time=               14500 Address= 938 Dout=170 VDout=170
+PASS:Write Successful
+------------------------------------------------------------------------
+Simulation complete via $finish(1) at time 15 US + 0
+./testcase.v:101 #5000 $finish;
+ncsim> exit
+TOOL:	irun(64)	13.10-s016: Exiting on Apr 11, 2019 at 17:15:34 IST  (total: 00:00:06)

@@ -1,0 +1,226 @@
+`timescale 1ns/1ps
+
+module master(sda,scl);
+ inout sda;
+ output reg scl;
+ reg sda_wr;
+ reg [7:0]address;
+ reg [6:0]slave_add=7'b11001100;
+ reg [7:0]rxd_data;
+ reg [7:0]iregl;
+ reg ack;
+ integer i;
+ parameter NACK=1'b1,ACK=1'b0,wr=1'b0,rd=1'b1;
+ parameter tsu_sta=600,thd_sta=600,thd_dat=0,tsu_dat=100,tsu_sto=600,t_high=1200,t_low=1300;
+
+ initial                                   //Should be Initialized in TB
+  begin
+   scl=1'b1;
+   sda_wr=1'b1;
+  end
+
+ always                                     //Standard Clock Generator
+  begin:CLOCK
+   #t_low scl=1'b1;
+   #t_high scl=1'b0;
+  end 
+ assign sda=sda_wr;
+
+       //-------------------------------------------------------------------------------------------//
+
+ task addressTask;                          //Sends Device Address to SDA
+   input rw;
+   begin 
+    address={slave_add,rw};
+    for(i=7;i<=0;i=i-1)
+    begin
+     @(negedge scl);
+     #(t_low-tsu_dat);                     //1300-100=1200
+     sda_wr=address[i];
+    end
+   end
+ endtask
+
+
+
+ task get_ack;                                     //Gets the ACK Bit
+  begin     
+   @(negedge scl)
+    #(t_low/2);  //650
+    sda_wr=1'b1;                                     //Release the SDA Line to Slave
+   @(posedge scl)
+    #thd_sta;
+    ack=sda;
+   
+  end
+  endtask
+
+ task send_ack;                                     //Send the ACK Bit
+  begin     
+   @(negedge scl)
+    #(t_low/2);      //650                             //Slave should release the line at t_low/2
+    #20;                                          //Wait for a While :)
+    sda_wr=1'b0;   //SEND ACK                        //Release the SDA Line to Master by Slave
+
+  end
+  endtask
+
+
+              
+ task write_task;                                  //The Ultimate Write Task
+  input [7:0]iregl;
+  input [7:0]data; 
+  begin:WRITE   
+   @(posedge scl)
+   #(t_high-thd_sta);                               //1200-600=600
+   sda_wr=1'b0;                                       //Start Write Operation
+   addressTask(wr);                                //Coz Write operation
+   get_ack; //There should be a condition at which it should be written. (data in mem should be written when Write = 1 and should be able to read when Write = 0).
+
+   if(ack==NACK)
+   begin
+    disable WRITE;                                //STOP The Write TASK
+   end
+
+   for(i=7;i>=0;i=i-1)                             //Send Internal Register Address
+   begin
+    @(negedge scl);
+    #(t_low-tsu_dat);               //1300-100=1200
+    sda_wr=iregl[i];
+   end //for
+    get_ack;
+    
+   if(ack==NACK)
+   begin
+    disable WRITE;                                //STOP The Write TASK
+   end
+
+    for(i=7;i>=0;i=i-1)                             //Send Data to sda
+    begin
+     @(negedge scl);
+     #(t_low-tsu_sta);             //1300-100=1200
+     sda_wr=data[i];
+    end  //for
+    get_ack;
+
+   if(ack==NACK)
+   begin
+    disable WRITE;                                //STOP The Write TASK
+   end
+
+    @(negedge scl);
+    #(t_low-tsu_dat);        //1200
+    sda_wr=1'b0;
+    @(posedge scl)
+    #tsu_sto;              //600
+    sda_wr=1'b1; 
+   end  //Write
+ endtask
+
+
+
+  task task_read;
+  input ireg;
+  begin:READ
+   sda_wr=1'b1;       
+   @(posedge scl)
+   #(t_high-thd_sta);
+   sda_wr=1'b0;                                       //Start READ  Operation
+   addressTask(wr);                                //Coz Write operation First  
+   get_ack;
+
+   if(ack==NACK)
+   begin
+    disable READ;                                //STOP The Write TASK
+   end
+
+   for(i=7;i>=0;i=i-1)                             //Send Internal Register Address
+   begin
+    @(negedge scl);
+    #(t_low-tsu_dat);
+    sda_wr=iregl[i];
+   end //for
+   get_ack;
+
+   if(ack==NACK)
+   begin
+    disable READ;                                //STOP The Write TASK
+   end
+
+
+   @(negedge scl)
+   #(t_low-tsu_dat);
+    sda_wr=1'b1;
+   @(posedge scl)
+    #(t_high-thd_sta);
+    sda_wr=1'b0;                                      //Repeat Start
+   addressTask(rd);
+   get_ack;
+   
+   if(ack==NACK)
+   begin
+    disable READ;                                //STOP The Write TASK
+   end
+
+   for(i=7;i>=0;i=i-1)                             //Receive Data from Slave
+   begin
+    @(posedge scl);
+    #thd_dat;
+    rxd_data[i]=sda_wr;
+   end
+   send_ack;
+
+    @(negedge scl);
+    #(t_low-tsu_dat);   //1200
+    sda_wr=1'b0;
+    @(posedge scl)
+    #tsu_sto;            //600
+    sda_wr=1'b1; 
+   end  //Read
+ endtask
+
+endmodule
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

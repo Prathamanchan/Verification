@@ -1,0 +1,14 @@
+waveform add -signals [subst {
+	{[format {memorytb.address[11:0]}]}
+	{[format {memorytb.cen}]}
+	{[format {memorytb.din[7:0]}]}
+	{[format {memorytb.dout[7:0]}]}
+	{[format {memorytb.rd}]}
+	{[format {memorytb.rst}]}
+	{[format {memorytb.wr}]}
+	{[format {memorytb.clk}]}
+	{[format {memorytb.uut.temp_address[11:0]}]}
+	{[format {memorytb.uut.temp_data[7:0]}]}
+	{[format {memorytb.uut.wr_chk[7:0]}]}
+	{[format {memorytb.uut.status}]}
+	}]

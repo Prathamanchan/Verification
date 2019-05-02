@@ -1,0 +1,21 @@
+waveform add -signals [subst {
+	{[format {memtb.add[11:0]}]}
+	{[format {memtb.cen}]}
+	{[format {memtb.clk}]}
+	}]
+
+set nodeNum [waveform add -signals [subst { {[format {memtb.delay}]}}]]
+waveform format $nodeNum -trace analogSampleAndHold
+
+waveform add -signals [subst {
+	{[format {memtb.din[7:0]}]}
+	{[format {memtb.dout[7:0]}]}
+	{[format {memtb.rd}]}
+	{[format {memtb.rst}]}
+	{[format {memtb.wr}]}
+	{[format {memtb.uut.temp_address[11:0]}]}
+	{[format {memtb.uut.temp_data[7:0]}]}
+	{[format {memtb.uut.wr_chk[7:0]}]}
+	{[format {memtb.uut.readStatus}]}
+	{[format {memtb.uut.writeStatus}]}
+	}]

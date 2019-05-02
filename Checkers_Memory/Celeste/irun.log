@@ -1,0 +1,83 @@
+irun(64): 13.10-s016: (c) Copyright 1995-2014 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s016: Started on Apr 11, 2019 at 17:02:31 IST
+irun
+	-f run_mem.txt
+		mem_tb.v
+		mem_top.v
+		checkers.v
+		top.v
+		-access +rwc
+		-input probe.tcl
+		-top top
+Recompiling... reason: file './checkers.v' is newer than expected.
+	expected: Thu Apr 11 16:56:25 2019
+	actual:   Thu Apr 11 17:02:19 2019
+file: checkers.v
+   write<=vir_mem[address[11:10]][address[9:0]];
+         |
+ncvlog: *W,WNBAIF (checkers.v,47|9): Non-blocking assignments in functions are no longer legal in Verilog.
+   write<=8'bxx;
+         |
+ncvlog: *W,WNBAIF (checkers.v,49|9): Non-blocking assignments in functions are no longer legal in Verilog.
+	module worklib.check:v
+		errors: 0, warnings: 2
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		top
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.check:v <0x11d26b80>
+			streams:  15, words: 14753
+		worklib.top:v <0x182aad83>
+			streams:   1, words:  1053
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 4       4
+		Registers:              53      53
+		Scalar wires:            5       -
+		Vectored wires:          3       -
+		Always blocks:          14      14
+		Initial blocks:          4       4
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.top:v
+Loading snapshot worklib.top:v .................... Done
+ncsim> source /home/cad/INCISIV131/tools/inca/files/ncsimrc
+ncsim> database -open waves_mem_tb -default
+Created default SHM database waves_mem_tb
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> ##probe -create -database waves_muxtb -all -depth {muxtb.UUT}
+ncsim> run 100 ms
+INFO:Time=4500 Address= 938 Data=170
+
+
+INFO:Time=6500 Address= 939 Dout=  0 Vout=  0
+
+PASS: Time=6500 Read Successful
+
+
+INFO:Time=8500 Address= 973 Dout=  x Vout=  x
+
+FAIL: Time=8500 Read not successful
+
+INFO:Time=9500 Address= 939 Data=187
+
+INFO:Time=10500 Address= 939 Data=187
+
+
+INFO:Time=12500 Address= 938 Dout=  x Vout=  x
+
+FAIL: Time=12500 Read not successful
+
+
+INFO:Time=14500 Address= 938 Dout=170 Vout=170
+
+PASS: Time=14500 Read Successful
+
+Simulation complete via $finish(1) at time 15 US + 0
+./mem_tb.v:49  #5000 $finish;
+ncsim> exit
+TOOL:	irun(64)	13.10-s016: Exiting on Apr 11, 2019 at 17:02:39 IST  (total: 00:00:08)

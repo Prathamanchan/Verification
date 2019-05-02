@@ -1,0 +1,55 @@
+irun(64): 13.10-s016: (c) Copyright 1995-2014 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s016: Started on May 02, 2019 at 14:47:51 IST
+irun
+	-f run_i2c.txt
+		master.v
+		mastertb.v
+		slave.v
+		-access +rwc
+		-input probe.tcl
+Recompiling... reason: file './master.v' is newer than expected.
+	expected: Thu May  2 14:41:37 2019
+	actual:   Thu May  2 14:46:19 2019
+file: master.v
+	module worklib.master:v
+		errors: 0, warnings: 0
+file: slave.v
+	module worklib.slave:v
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		mastertb
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.master:v <0x745e8709>
+			streams:  13, words: 28851
+		worklib.mastertb:v <0x044cc7d0>
+			streams:   1, words:  2749
+		worklib.slave:v <0x3dafa711>
+			streams:   9, words: 21756
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 3       3
+		Registers:              41      41
+		Scalar wires:            4       -
+		Always blocks:           5       5
+		Initial blocks:         11      11
+		Cont. assignments:       2       2
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.mastertb:v
+Loading snapshot worklib.mastertb:v .................... Done
+ncsim> source /home/cad/INCISIV131/tools/inca/files/ncsimrc
+ncsim> database -open waves_mastertb -default
+Created default SHM database waves_mastertb
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> ##probe -create -database waves_muxtb -all -depth {muxtb.UUT}
+ncsim> run 100 ms
+Hello TESTBENCH
+Simulation complete via $finish(1) at time 841900 NS + 0
+./mastertb.v:23 #200000 $finish;
+ncsim> exit
+TOOL:	irun(64)	13.10-s016: Exiting on May 02, 2019 at 14:47:53 IST  (total: 00:00:02)

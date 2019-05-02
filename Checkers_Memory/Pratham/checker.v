@@ -1,0 +1,91 @@
+`timescale 1ns/1ps
+`include "mem_top.v"
+module memtb;
+ reg cen,clk,rst,rd,wr;
+ reg [7:0]din;
+ reg [11:0]add;
+ wire [7:0]dout;
+ real delay=500;
+ reg [1:0]bank;
+ integer i,ii,j;
+ mem_top uut(.cen(cen),.clk(clk),.din(din),.add(add),.rst(rst),.rd(rd),.wr(wr),.dout(dout));
+ initial 
+ clk=0;
+ always begin
+ #delay clk=~clk;
+ end
+
+initial
+begin
+$dumpfile("memory.vcd");
+$dumpvars(0,memtb);
+uut.vdd=1.8;
+uut.vss=0;
+bank=0;
+i=0;
+j=0;
+ii=0;
+end
+
+initial
+begin
+repeat(5)@(posedge clk);
+#10 cen=1;
+#10;
+cen=0;
+end
+
+
+initial 
+begin
+
+wr=1;rd=0;cen=0;rst=0;
+for(i=0;i<10;i=i+1)
+begin
+add=$random;   //write
+din=$random;
+//#2000;
+repeat(2)@(posedge clk)
+$display("Data=%d Bank=%d Address=%d Memory=%d",din,add[11:10],add[9:0],uut.memory[add[11:10]][add[9:0]]);
+if(din==uut.memory[add[11:10]][add[9:0]])
+$display("PASS:Write Succesful");
+else
+$display("FAIL:Write Failed");
+end  //for
+
+wr=1;rd=0;cen=0;
+
+repeat(4)     //write
+begin
+for(j=0;j<1023;j=j+1)
+begin
+@(posedge clk)
+@(posedge clk)
+add[11:10]=bank;
+add[9:0]=j;
+din=add[9:0]%256;
+//@(posedge clk)
+//@(posedge clk)
+//$display("Memory=%d",uut.memory[add[11:10]][add[9:0]]);
+//$display("address=%b Bank= %b",add[9:0],add[11:10]);
+end
+$display("Writing Bank= %b",bank);
+bank=bank+1;
+end
+
+wr=0;rd=1;cen=0;
+for(ii=0;ii<10;ii=ii+1)  //READ
+begin
+#2000;
+add=$random;
+repeat(4)@(posedge clk)
+$display("Bank=%d Address=%d dout=%d",add[11:10],add[9:0],dout);
+if(dout==uut.memory[add[11:10]][add[9:0]])
+$display("READ Succesful");
+else
+$display("READ Failed");
+end //for
+
+#20000 $finish;
+end //initial
+endmodule

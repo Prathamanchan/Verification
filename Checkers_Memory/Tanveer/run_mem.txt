@@ -1,0 +1,7 @@
+mem_top.v
+mem_tc.v
+mem_chkr.v
+mem_DUT.v
+-access +rwc
+-input probe.tcl
+

@@ -1,0 +1,7 @@
+master.v
+mastertb.v
+slave.v
+//i2c_top.v
+-access +rwc
+-input probe.tcl
+

@@ -1,0 +1,7 @@
+checker.v
+memorytb.v
+top.v
+memory.v
+-access +rwc
+-input probe.tcl
+

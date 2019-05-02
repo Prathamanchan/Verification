@@ -1,0 +1,200 @@
+irun(64): 13.10-s016: (c) Copyright 1995-2014 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s016: Started on Apr 10, 2019 at 13:29:00 IST
+irun
+	-f run_memory.txt
+		checker.v
+		memorytb.v
+		top.v
+		memory.v
+		-access +rwc
+		-input probe.tcl
+Recompiling... reason: file './memorytb.v' is newer than expected.
+	expected: Tue Apr  9 12:44:29 2019
+	actual:   Tue Apr  9 12:46:18 2019
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		top
+	Building instance overlay tables: .................... Done
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 4       4
+		Registers:              51      51
+		Scalar wires:            5       -
+		Vectored wires:          3       -
+		Always blocks:          14      14
+		Initial blocks:          4       4
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.top:v
+Loading snapshot worklib.top:v .................... Done
+ncsim> source /home/cad/INCISIV131/tools/inca/files/ncsimrc
+ncsim> database -open waves_memorytb -default
+Created default SHM database waves_memorytb
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> ##probe -create -database waves_memorytb -all -depth {memorytb.UUT}
+ncsim> run 100 ms
+                   0
+device is nt working
+                   0
+device is nt working
+                1000
+device is nt working
+                1000
+device is nt working
+                2000
+device is working fine
+                2000
+device is working fine
+                3000
+device is working fine
+                3000
+device is working fine
+                4000
+device is working fine
+                4000
+device is working fine
+                5000
+device is working fine
+                5000
+device is working fine
+                6000
+device is working fine
+                6000
+device is working fine
+                7000
+device is working fine
+                7000
+device is working fine
+                8000
+device is working fine
+                8000
+device is working fine
+                9000
+device is working fine
+                9000
+device is working fine
+               10000
+device is working fine
+               10000
+device is working fine
+               11000
+device is working fine
+               11000
+device is working fine
+               12000
+device is working fine
+               12000
+device is working fine
+               13000
+device is working fine
+               13000
+device is working fine
+               14000
+device is working fine
+               14000
+device is working fine
+               15000
+device is working fine
+               15000
+device is working fine
+               16000
+device is working fine
+               16000
+device is working fine
+unsuccessful
+               18000
+device is working fine
+               18000
+device is working fine
+successful
+               20000
+device is working fine
+               20000
+device is working fine
+unsuccessful
+               22000
+device is working fine
+               22000
+device is working fine
+successful
+               24000
+device is working fine
+               24000
+device is working fine
+successful
+               26000
+device is working fine
+               26000
+device is working fine
+unsuccessful
+               28000
+device is working fine
+               28000
+device is working fine
+successful
+               30000
+device is working fine
+               30000
+device is working fine
+successful
+               32000
+device is working fine
+               32000
+device is working fine
+successful
+               34000
+device is working fine
+               34000
+device is working fine
+successful
+               36000
+device is working fine
+               36000
+device is working fine
+successful
+               38000
+device is working fine
+               38000
+device is working fine
+successful
+               40000
+device is working fine
+               40000
+device is working fine
+successful
+               42000
+device is working fine
+               42000
+device is working fine
+successful
+               44000
+device is working fine
+               44000
+device is working fine
+successful
+               46000
+device is working fine
+               46000
+device is working fine
+unsuccessful
+               48000
+device is working fine
+               48000
+device is working fine
+successful
+               50000
+device is working fine
+               50000
+device is working fine
+successful
+               52000
+device is working fine
+               52000
+device is working fine
+Simulation complete via $finish(1) at time 52695 NS + 0
+./memorytb.v:51 #2000 $finish;
+ncsim> exit
+TOOL:	irun(64)	13.10-s016: Exiting on Apr 10, 2019 at 13:29:06 IST  (total: 00:00:06)

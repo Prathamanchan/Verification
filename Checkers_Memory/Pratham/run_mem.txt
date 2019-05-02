@@ -1,0 +1,5 @@
+mem_tb.v
+mem_top.v
+-access +rwc
+-input probe.tcl
+

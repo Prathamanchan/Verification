@@ -1,0 +1,53 @@
+irun(64): 13.10-s016: (c) Copyright 1995-2014 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s016: Started on Apr 11, 2019 at 17:07:47 IST
+irun
+	-f run_mem.txt
+		mem_tb.v
+		mem_top.v
+		-access +rwc
+		-input probe.tcl
+file: mem_tb.v
+	module worklib.memtb:v
+		errors: 0, warnings: 0
+file: mem_top.v
+	module worklib.mem_top:v
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		memtb
+		mem_top
+	Building instance overlay tables: ....................
+ $display("Frequency=%d Hz",freq);
+                               |
+ncelab: *W,REALCV (./mem_top.v,58|31): Real argument converted to integer for (%d).
+ Done
+	Generating native compiled code:
+		worklib.mem_top:v <0x30f39347>
+			streams:   9, words:  8949
+		worklib.memtb:v <0x510d2b33>
+			streams:   3, words:  3269
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 2       2
+		Registers:              32      32
+		Scalar wires:            5       -
+		Vectored wires:          3       -
+		Always blocks:           6       6
+		Initial blocks:          3       3
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.memtb:v
+Loading snapshot worklib.memtb:v .................... Done
+ncsim> source /home/cad/INCISIV131/tools/inca/files/ncsimrc
+ncsim> database -open waves_mem_tb -default
+Created default SHM database waves_mem_tb
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> ##probe -create -database waves_muxtb -all -depth {muxtb.UUT}
+ncsim> run 100 ms
+Simulation complete via $finish(1) at time 15 US + 0
+./mem_tb.v:49  #5000 $finish;
+ncsim> exit
+TOOL:	irun(64)	13.10-s016: Exiting on Apr 11, 2019 at 17:07:54 IST  (total: 00:00:07)
