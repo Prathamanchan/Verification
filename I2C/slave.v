@@ -27,7 +27,6 @@ module slave(sda,scl);
  reg rs;
  reg scheck=1'b0;
   
-// reg [7:0]chkadd;
  integer a,i,j,k;
  
 
@@ -74,6 +73,8 @@ always@(posedge scond)
   end 
  end
 
+
+
 always @(posedge scl) 
  begin:MAIN
   state=nxt_state;
@@ -96,7 +97,6 @@ always @(posedge scl)
          begin
           @(posedge scl);
           #thd_sta;         //600   
-         
           address[a]=sda;         
          end
          
@@ -105,7 +105,7 @@ always @(posedge scl)
           @(negedge scl)
           #(t_low/2);      //1300/2=650 
           #2 scond=1'b1;                                                       
-          #20 sda_wr=1'b0;
+          #20 sda_wr=1'b0;  //ACK
 
           if(rs==1'b0)
           begin
@@ -132,12 +132,13 @@ iaddr:   begin                    //internal address is accepted and read or wri
          if(mempointer<=8'b11111111)                     
          begin
          @(negedge scl)
-         #(t_low/2);  
+         #(t_low/2);     //ACK
          #2 scond=1'b1;
          #20;
-         sda_wr=1'b0;
+         sda_wr=1'b0; 
          internalreg=mempointer;
-	 if(address[0]==1'b1)               
+	 
+          if(address[0]==1'b1)               
 	  begin
           nxt_state=read; 
 	  end
@@ -157,7 +158,6 @@ iaddr:   begin                    //internal address is accepted and read or wri
 
 write:   begin                               //data is accepted 
          rdw=1'b0;
-         
          rs=1'b1;
          #thd_sta temp_data[7]=sda; 
          
